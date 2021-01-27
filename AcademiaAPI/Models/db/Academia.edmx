@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="AcademiaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Estudiante">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="nvarchar" MaxLength="50" />
+          <Property Name="fechanacimiento" Type="date" />
+          <Property Name="promedionotas" Type="float" />
+          <Property Name="eshombre" Type="bit" />
+          <Property Name="id_tipoSangre" Type="int" />
+          <Property Name="direccion" Type="nvarchar" MaxLength="50" />
+          <Property Name="celular" Type="nvarchar" MaxLength="12" />
+        </EntityType>
+        <EntityType Name="TipoSangre">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="nvarchar" MaxLength="5" />
+        </EntityType>
+        <Association Name="FK_Estudiante_TipoSangre">
+          <End Role="TipoSangre" Type="Self.TipoSangre" Multiplicity="0..1" />
+          <End Role="Estudiante" Type="Self.Estudiante" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoSangre">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Estudiante">
+              <PropertyRef Name="id_tipoSangre" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AcademiaModelStoreContainer">
+          <EntitySet Name="Estudiante" EntityType="Self.Estudiante" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TipoSangre" EntityType="Self.TipoSangre" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Estudiante_TipoSangre" Association="Self.FK_Estudiante_TipoSangre">
+            <End Role="TipoSangre" EntitySet="TipoSangre" />
+            <End Role="Estudiante" EntitySet="Estudiante" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="AcademiaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Estudiante">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="fechanacimiento" Type="DateTime" Precision="0" />
+          <Property Name="promedionotas" Type="Double" />
+          <Property Name="eshombre" Type="Boolean" />
+          <Property Name="id_tipoSangre" Type="Int32" />
+          <Property Name="direccion" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="celular" Type="String" MaxLength="12" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="TipoSangre" Relationship="AcademiaModel.FK_Estudiante_TipoSangre" FromRole="Estudiante" ToRole="TipoSangre" />
+        </EntityType>
+        <EntityContainer Name="AcademiaEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Estudiante" EntityType="Self.Estudiante" />
+          <EntitySet Name="TipoSangre" EntityType="AcademiaModel.TipoSangre" />
+          <AssociationSet Name="FK_Estudiante_TipoSangre" Association="AcademiaModel.FK_Estudiante_TipoSangre">
+            <End Role="TipoSangre" EntitySet="TipoSangre" />
+            <End Role="Estudiante" EntitySet="Estudiante" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="TipoSangre">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Estudiante" Relationship="AcademiaModel.FK_Estudiante_TipoSangre" FromRole="TipoSangre" ToRole="Estudiante" />
+        </EntityType>
+        <Association Name="FK_Estudiante_TipoSangre">
+          <End Type="AcademiaModel.TipoSangre" Role="TipoSangre" Multiplicity="0..1" />
+          <End Type="AcademiaModel.Estudiante" Role="Estudiante" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoSangre">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Estudiante">
+              <PropertyRef Name="id_tipoSangre" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="AcademiaModelStoreContainer" CdmEntityContainer="AcademiaEntities">
+          <EntitySetMapping Name="Estudiante">
+            <EntityTypeMapping TypeName="AcademiaModel.Estudiante">
+              <MappingFragment StoreEntitySet="Estudiante">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="fechanacimiento" ColumnName="fechanacimiento" />
+                <ScalarProperty Name="promedionotas" ColumnName="promedionotas" />
+                <ScalarProperty Name="eshombre" ColumnName="eshombre" />
+                <ScalarProperty Name="id_tipoSangre" ColumnName="id_tipoSangre" />
+                <ScalarProperty Name="direccion" ColumnName="direccion" />
+                <ScalarProperty Name="celular" ColumnName="celular" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TipoSangre">
+            <EntityTypeMapping TypeName="AcademiaModel.TipoSangre">
+              <MappingFragment StoreEntitySet="TipoSangre">
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
